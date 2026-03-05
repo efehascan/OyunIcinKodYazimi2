@@ -1,9 +1,9 @@
 # YAPILAN ÖRNEK HAKKINDA - SOLID PRENSİPLERİ UYGULAMASI
 
-## 📋 Genel Bakış
+## Genel Bakış
 Bu projede, Unity oyun geliştirme ortamında SOLID prensiplerinin nasıl uygulanacağını gösteren bir savaş/hasar sistemi örneği oluşturulmuştur.
 
-## 🎯 Sistem Mimarisi
+## Sistem Mimarisi
 
 ### **Klasör Yapısı**
 ```
@@ -17,13 +17,13 @@ Bu projede, Unity oyun geliştirme ortamında SOLID prensiplerinin nasıl uygula
 
 ---
 
-## 🔍 SOLID Prensipleri Uygulaması
+## SOLID Prensipleri Uygulaması
 
 ### **1. Single Responsibility Principle (Tek Sorumluluk Prensibi)**
 
 Her sınıf yalnızca **bir sorumluluğa** sahiptir ve **bir değişme sebebi** vardır.
 
-#### ✅ **Örnekler:**
+#### **Örnekler:**
 
 **`Health.cs`** - Sadece can yönetiminden sorumlu
 ```csharp
@@ -48,7 +48,7 @@ Her sınıf yalnızca **bir sorumluluğa** sahiptir ve **bir değişme sebebi** 
 - Ölüm durumunda skor verme
 ```
 
-#### ❌ **Anti-Pattern (Kötü Örnek):**
+#### **Anti-Pattern (Kötü Örnek):**
 Eğer Health sınıfı içinde skor yönetimi, düşman AI'ı ve hasar hesaplama olsaydı, SRP ihlal edilirdi.
 
 ---
@@ -57,7 +57,7 @@ Eğer Health sınıfı içinde skor yönetimi, düşman AI'ı ve hasar hesaplama
 
 Sınıflar **genişletmeye açık**, **değişikliğe kapalı** olmalıdır.
 
-#### ✅ **Uygulama:**
+#### **Uygulama:**
 
 **`IAttack` Interface'i:**
 ```csharp
@@ -71,7 +71,7 @@ public interface IAttack
 - `SwordAttack.cs` → BaseDamage: 10
 - `BowAttack.cs` → BaseDamage: 5
 
-#### 🎨 **Genişletilebilirlik:**
+#### **Genişletilebilirlik:**
 Yeni saldırı türü eklemek için **mevcut kodu değiştirmeye gerek yok**:
 ```csharp
 public class MagicAttack : IAttack
@@ -93,7 +93,7 @@ public class AxeAttack : IAttack
 
 Alt sınıflar, üst sınıfların yerine kullanılabilir olmalıdır.
 
-#### ✅ **Uygulama:**
+#### **Uygulama:**
 
 **`Player.cs` içinde:**
 ```csharp
@@ -101,9 +101,9 @@ private IAttack attackType;
 
 void Start()
 {
-    attackType = new SwordAttack();  // ✅ SwordAttack kullanılabilir
+    attackType = new SwordAttack();  // SwordAttack kullanılabilir
     // veya
-    attackType = new BowAttack();    // ✅ BowAttack kullanılabilir
+    attackType = new BowAttack();    // BowAttack kullanılabilir
 }
 
 void PerformAttack()
@@ -123,7 +123,7 @@ public int CalculateDamage(IAttack attack)
 }
 ```
 
-#### 🔑 **Anahtar Nokta:**
+#### **Anahtar Nokta:**
 `IAttack` interface'ini implement eden her sınıf, birbirinin yerine **sorunsuzca** kullanılabilir.
 
 ---
@@ -132,7 +132,7 @@ public int CalculateDamage(IAttack attack)
 
 Sınıflar, kullanmadıkları metodları içeren interface'lere bağımlı olmamalıdır.
 
-#### ✅ **Doğru Yaklaşım - Küçük ve Spesifik Interface'ler:**
+#### **Doğru Yaklaşım - Küçük ve Spesifik Interface'ler:**
 
 **`IAttack.cs`** - Sadece saldırı için
 ```csharp
@@ -150,7 +150,7 @@ public interface IDamageable
 }
 ```
 
-#### ❌ **Yanlış Yaklaşım (Projede hatalı örnek olarak gösterilmiş):**
+#### **Yanlış Yaklaşım (Projede hatalı örnek olarak gösterilmiş):**
 
 **`ICharacter.cs`** - Çok fazla sorumluluk
 ```csharp
@@ -158,7 +158,7 @@ public interface ICharacter
 {
     void Attack();
     void Heal();
-    void Fly();     // ❌ Her karakter uçamaz!
+    void Fly();     // Her karakter uçamaz!
 }
 ```
 
@@ -167,7 +167,7 @@ public interface ICharacter
 - Bir `Archer` uçamaz
 - Bu interface'i implement eden her sınıf, kullanmadığı metodu implement etmek zorunda kalır
 
-#### 💡 **Doğru Çözüm:**
+#### **Doğru Çözüm:**
 ```csharp
 public interface IAttackable { void Attack(); }
 public interface IHealable { void Heal(); }
@@ -184,14 +184,14 @@ public class Dragon : IAttackable, IFlyable { }
 
 Üst seviye modüller, alt seviye modüllere bağımlı olmamalı. Her ikisi de **soyutlamalara** bağımlı olmalıdır.
 
-#### ✅ **Uygulama:**
+#### **Uygulama:**
 
 **`Player.cs`** - Soyutlamaya bağımlı:
 ```csharp
-// ❌ Yanlış: Somut sınıfa bağımlılık
+// Yanlış: Somut sınıfa bağımlılık
 // private SwordAttack attackType;
 
-// ✅ Doğru: Interface'e bağımlılık
+// Doğru: Interface'e bağımlılık
 private IAttack attackType;
 
 void Start()
@@ -210,14 +210,14 @@ public int CalculateDamage(IAttack attack)
 }
 ```
 
-#### 🎯 **Avantajlar:**
+#### **Avantajlar:**
 1. **Esneklik**: Runtime'da farklı saldırı türleri kullanılabilir
 2. **Test Edilebilirlik**: Mock nesneler ile kolayca test edilebilir
 3. **Bağımsızlık**: `Player` sınıfı, hangi saldırı türünün kullanıldığını bilmek zorunda değil
 
 ---
 
-## 🎮 Sistem Akışı
+## Sistem Akışı
 
 ### **Saldırı Mekanizması:**
 
@@ -241,7 +241,7 @@ public int CalculateDamage(IAttack attack)
 
 ---
 
-## 📊 Sınıf Sorumlulukları Özeti
+## Sınıf Sorumlulukları Özeti
 
 | Sınıf | Sorumluluk | SOLID Prensibi |
 |-------|-----------|----------------|
@@ -256,26 +256,26 @@ public int CalculateDamage(IAttack attack)
 
 ---
 
-## ✨ Sistemin Güçlü Yönleri
+## Sistemin Güçlü Yönleri
 
-### 1️⃣ **Modülerlik**
+### **Modülerlik**
 Her bileşen bağımsız şekilde geliştirilebilir ve test edilebilir.
 
-### 2️⃣ **Genişletilebilirlik**
+### **Genişletilebilirlik**
 Yeni saldırı türleri, düşman türleri veya hesaplama metodları **mevcut kodu bozmadan** eklenebilir.
 
-### 3️⃣ **Test Edilebilirlik**
+### **Test Edilebilirlik**
 Interface'ler sayesinde mock nesneler ile unit test yazılabilir.
 
-### 4️⃣ **Bakım Kolaylığı**
+### **Bakım Kolaylığı**
 Her sınıfın tek sorumluluğu olduğu için kod okunması ve bakımı kolay.
 
-### 5️⃣ **Esneklik**
+### **Esneklik**
 Runtime'da davranışlar değiştirilebilir (örn: oyuncunun silahını değiştirme).
 
 ---
 
-## 🚀 Geliştirme Önerileri
+## Geliştirme Önerileri
 
 ### **Eklenebilecek Özellikler:**
 
@@ -318,7 +318,7 @@ Runtime'da davranışlar değiştirilebilir (örn: oyuncunun silahını değişt
 
 ---
 
-## 📝 Notlar
+## Notlar
 
 - Bu sistem, Unity oyun motorunda C# ile yazılmıştır
 - SOLID prensipleri, **object-oriented programming** temelinde uygulanmıştır
@@ -327,13 +327,13 @@ Runtime'da davranışlar değiştirilebilir (örn: oyuncunun silahını değişt
 
 ---
 
-## 🎓 Öğrenilen Dersler
+## Öğrenilen Dersler
 
-1. ✅ **Her sınıf tek bir işten sorumlu olmalı**
-2. ✅ **Yeni özellikler eklerken mevcut kodu değiştirmemeli**
-3. ✅ **Interface'ler küçük ve spesifik olmalı**
-4. ✅ **Somut sınıflar yerine soyutlamalara bağımlı olunmalı**
-5. ✅ **Alt sınıflar, üst sınıfların yerine kullanılabilir olmalı**
+1. **Her sınıf tek bir işten sorumlu olmalı**
+2. **Yeni özellikler eklerken mevcut kodu değiştirmemeli**
+3. **Interface'ler küçük ve spesifik olmalı**
+4. **Somut sınıflar yerine soyutlamalara bağımlı olunmalı**
+5. **Alt sınıflar, üst sınıfların yerine kullanılabilir olmalı**
 
 ---
 
