@@ -6,8 +6,8 @@ using UnityEngine;
 /// </summary>
 public class ScoreManager : MonoBehaviour
 {
-    private int currentScore;
-    private int highScore;
+    [SerializeField] private int currentScore;
+    [SerializeField] private int highScore;
 
     private void Start()
     {
@@ -41,13 +41,13 @@ public class ScoreManager : MonoBehaviour
             Debug.Log("Skor sifirlandi. Rekor hala duruyor: " + highScore);
         }
 
-        // Delete tusuna basinca tum kayitlari sil
-        if (Input.GetKeyDown(KeyCode.Delete))
-        {
+    }
+
+    public void ResetHighScore()
+    {
             PlayerPrefs.DeleteKey("HighScore");
             PlayerPrefs.Save();
             highScore = 0;
             Debug.Log("Rekor silindi!");
-        }
     }
 }

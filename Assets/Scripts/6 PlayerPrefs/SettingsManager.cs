@@ -6,8 +6,8 @@ using UnityEngine;
 /// </summary>
 public class SettingsManager : MonoBehaviour
 {
-    private float musicVolume;
-    private string playerName;
+    [SerializeField] private float musicVolume;
+    [SerializeField] private string playerName;
 
     private void Start()
     {
