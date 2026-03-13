@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "OyunIcinKodYazimi2.slnx"
+    "dotnet.defaultSolution": "OyunIcinnKodYazimi2.slnx"
 }

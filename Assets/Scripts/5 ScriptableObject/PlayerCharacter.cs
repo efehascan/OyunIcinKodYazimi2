@@ -1,11 +1,14 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCharacter : MonoBehaviour
 {
     [Header("Karakter Verisi")]
     [SerializeField] private CharacterData data;
 
-    private int currentHealth;
+    [SerializeField] private int currentHealth;
+    [SerializeField] private Key attackKey = Key.Space;
 
     private void Start()
     {
@@ -15,10 +18,11 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-        // WASD hareket -- hiz degeri ScriptableObject'ten okunuyor
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        transform.Translate(new Vector3(h, 0, v) * data.speed * Time.deltaTime);
+
+        if (Keyboard.current != null && Keyboard.current[attackKey].wasPressedThisFrame)
+        {
+            TakeDamage(data.damage);
+        }   
     }
 
     public void TakeDamage(int amount)
